@@ -14,21 +14,25 @@ def save_config(config):
     with open(CONFIG_FILE, "w") as f:
         json.dump(config, f, indent=2)
 
-# Gebäude 1x1 (2S) mit Fertigungsalange
-# Silizium: 16 Sekunden
-
-# Gebäude 1x1 (1M) mit Fertigungsanlage
-# Silizium: 16 Sekunden
-
-# Gebäude 2x1 (2S1M) - 150% Effi - mit Fertigungsanlage
-# Silizium: 10 Sekunden
-
-# Gebäude 2x1 (1M) - 200% Effi - mit Fertigungsanlage
-# Silizium: 6 Sekunden
-
 def load_recipes():
-    with open("recipes.json", "r") as f:
-        return json.load(f)
+    try:
+        with open("recipes.json", "r") as f:
+            data = json.load(f)
+            if not isinstance(data, dict):
+                raise ValueError("Rezepte-Datei enthält keine gültige Struktur.")
+            return data
+    except FileNotFoundError:
+        print("[FEHLER] Die Datei 'recipes.json' wurde nicht gefunden.")
+        print("Bitte stelle sicher, dass sie im gleichen Verzeichnis wie 'main.py' liegt.")
+        exit(1)
+    except json.JSONDecodeError as e:
+        print("[FEHLER] Die Datei 'recipes.json' enthält ungültiges JSON.")
+        print(f"Details: {e}")
+        exit(1)
+    except Exception as e:
+        print("[FEHLER] Unerwarteter Fehler beim Laden der Rezepte:")
+        print(f"{e}")
+        exit(1)
 
 recipes = load_recipes()
 
