@@ -1,6 +1,30 @@
 from math import ceil
 
 recipes = {
+    "Optisches Kabel": {
+        "inputs": {"Raffinierter Kristall": 2, "Kabel": 2},
+        "outputs": 1,
+        "duration": 30,
+        "building": "Raffinerie"
+    },
+    "Kabel": {
+        "inputs": {"Draht": 1, "Silizium": 1, "Kristallbrocken": 2},
+        "outputs": 1,
+        "duration": 20,
+        "building": "Raffinerie"
+    },
+    "Draht": {
+        "inputs": {"Quarzsand": 1, "Metallplatte": 1},
+        "outputs": 1,
+        "duration": 16,
+        "building": "Fertigungsanlage"
+    },
+    "Raffinierter Kristall": {
+        "inputs": {"Energetisierte Platte": 1, "Kristallpulver": 1},
+        "outputs": 1,
+        "duration": 40,
+        "building": "Raffinerie"
+    },
     "Energetisierte Platte": {
         "inputs": {"Verstärkte Platte": 2, "Kristallbrocken": 2},
         "outputs": 1,
@@ -42,6 +66,12 @@ recipes = {
         "outputs": 1,
         "duration": 4,
         "building": "Fertigungsanlage"
+    },
+    "Kristallpulver": {
+        "inputs": {"Quarzsand": 1, "Kristallbrocken": 3},
+        "outputs": 1,
+        "duration": 12,
+        "building": "Raffinerie"
     },
     "Quarzsand": {
         "inputs": {},
