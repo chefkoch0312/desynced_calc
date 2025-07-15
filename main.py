@@ -1,4 +1,30 @@
 from math import ceil
+import json
+import os
+
+CONFIG_FILE = "config.json"
+
+def load_config():
+    if os.path.exists(CONFIG_FILE):
+        with open(CONFIG_FILE, "r") as f:
+            return json.load(f)
+    return {"efficiency_bonus": 100}  # Standard: 100% (kein Bonus)
+
+def save_config(config):
+    with open(CONFIG_FILE, "w") as f:
+        json.dump(config, f, indent=2)
+
+# Gebäude 1x1 (2S) mit Fertigungsalange
+# Silizium: 16 Sekunden
+
+# Gebäude 1x1 (1M) mit Fertigungsanlage
+# Silizium: 16 Sekunden
+
+# Gebäude 2x1 (2S1M) - 150% Effi - mit Fertigungsanlage
+# Silizium: 10 Sekunden
+
+# Gebäude 2x1 (1M) - 200% Effi - mit Fertigungsanlage
+# Silizium: 6 Sekunden
 
 recipes = {
     "Optisches Kabel": {
@@ -94,7 +120,7 @@ recipes = {
 }
 
 
-def calculate_requirements(product, rate_per_minute, recipes):
+def calculate_requirements(product, rate_per_minute, recipes, config):
     requirements = {}
     buildings_needed = {}
 
@@ -104,7 +130,8 @@ def calculate_requirements(product, rate_per_minute, recipes):
             return
 
         recipe = recipes[item]
-        output_per_minute = (60 / recipe["duration"]) * recipe["outputs"]
+        effektive_dauer = recipe["duration"] / (config["efficiency_bonus"] / 100)
+        output_per_minute = (60 / effektive_dauer) * recipe["outputs"]
         multiplier = rate / output_per_minute
 
         building = recipe.get("building")
@@ -126,13 +153,16 @@ def calculate_requirements(product, rate_per_minute, recipes):
     return requirements, buildings_needed
 
 
-def display_chain(product, rate, recipes, indent=""):
+def display_chain(product, rate, recipes, config, indent=""):
     recipe = recipes.get(product)
     if not recipe:
         print(f"{indent}[?] Kein Rezept für {product}")
         return
 
-    output_rate = (60 / recipe["duration"]) * recipe["outputs"]
+    # ==========
+    effektive_dauer = recipe["duration"] / (config["efficiency_bonus"] / 100)
+    output_rate = (60 / effektive_dauer) * recipe["outputs"]
+    # ==========
     needed_buildings = ceil(rate / output_rate)
     building = recipe.get("building", "Unbekannt")
 
@@ -140,11 +170,29 @@ def display_chain(product, rate, recipes, indent=""):
 
     for input_item, qty in recipe["inputs"].items():
         input_rate = qty * (rate / recipe["outputs"])
-        display_chain(input_item, input_rate, recipes, indent + "    ")
+        display_chain(input_item, input_rate, recipes, config, indent + "    ")
 
 
 def main():
     print("=== Desynced Produktionsketten-Rechner ===")
+
+    # ============================================
+    config = load_config()
+    print(f"\nAktueller Effizienzbonus: {config['efficiency_bonus']}%")
+    new_val = input("Neuen Bonus eingeben (Enter zum Beibehalten): ").strip()
+    if new_val:
+        try:
+            entered = int(new_val)
+            if entered <= 0:
+                print("Effizienzbonus 0% ist nicht erlaubt. Es wird stattdessen mit 100% gerechnet (Standard ohne Module).")
+                config["efficiency_bonus"] = 100
+            else:
+                config["efficiency_bonus"] = entered
+            save_config(config)
+        except ValueError:
+            print("Ungültiger Wert, bisheriger Bonus wird beibehalten.")
+    # ============================================
+
     print("Verfügbare Produkte:")
     for product in recipes:
         print(f"- {product}")
@@ -160,7 +208,7 @@ def main():
         print("Bitte eine gültige Zahl eingeben.")
         return
 
-    result, buildings = calculate_requirements(product, rate, recipes)
+    result, buildings = calculate_requirements(product, rate, recipes, config)
 
     print(f"\n🛠 Ressourcenbedarf für {rate:.2f} x {product} pro Minute:")
     for item, amount in result.items():
@@ -171,7 +219,7 @@ def main():
         print(f" - {item}: {data['count']} x {data['building']}")
 
     print(f"\n🔍 Detaillierte Produktionskette:")
-    display_chain(product, rate, recipes)
+    display_chain(product, rate, recipes, config)
 
 
 if __name__ == "__main__":
