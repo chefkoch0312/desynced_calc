@@ -26,99 +26,11 @@ def save_config(config):
 # Gebäude 2x1 (1M) - 200% Effi - mit Fertigungsanlage
 # Silizium: 6 Sekunden
 
-recipes = {
-    "Optisches Kabel": {
-        "inputs": {"Raffinierter Kristall": 2, "Kabel": 2},
-        "outputs": 1,
-        "duration": 30,
-        "building": "Raffinerie"
-    },
-    "Kabel": {
-        "inputs": {"Draht": 1, "Silizium": 1, "Kristallbrocken": 2},
-        "outputs": 1,
-        "duration": 20,
-        "building": "Raffinerie"
-    },
-    "Draht": {
-        "inputs": {"Quarzsand": 1, "Metallplatte": 1},
-        "outputs": 1,
-        "duration": 16,
-        "building": "Fertigungsanlage"
-    },
-    "Raffinierter Kristall": {
-        "inputs": {"Energetisierte Platte": 1, "Kristallpulver": 1},
-        "outputs": 1,
-        "duration": 40,
-        "building": "Raffinerie"
-    },
-    "Energetisierte Platte": {
-        "inputs": {"Verstärkte Platte": 2, "Kristallbrocken": 2},
-        "outputs": 1,
-        "duration": 20,
-        "building": "Montageanlage"
-    },
-    "Silizium": {
-        "inputs": {"Quarzsand": 2},
-        "outputs": 1,
-        "duration": 16,
-        "building": "Fertigungsanlage"
-    },
-    "Verstärkte Platte": {
-        "inputs": {"Metallbarren": 2, "Metallplatte": 1},
-        "outputs": 1,
-        "duration": 12,
-        "building": "Montageanlage"
-    },
-    "Leiterplatte": {
-        "inputs": {"Metallplatte": 3, "Kristallbrocken": 5},
-        "outputs": 1,
-        "duration": 12,
-        "building": "Montageanlage"
-    },
-    "Metallplatte": {
-        "inputs": {"Metallbarren": 1},
-        "outputs": 1,
-        "duration": 6,
-        "building": "Fertigungsanlage"
-    },
-    "Fundamentplatte": {
-        "inputs": {"Metallbarren": 1},
-        "outputs": 5,
-        "duration": 1,
-        "building": "Fertigungsanlage"
-    },
-    "Metallbarren": {
-        "inputs": {"Metallerz": 1},
-        "outputs": 1,
-        "duration": 4,
-        "building": "Fertigungsanlage"
-    },
-    "Kristallpulver": {
-        "inputs": {"Quarzsand": 1, "Kristallbrocken": 3},
-        "outputs": 1,
-        "duration": 12,
-        "building": "Raffinerie"
-    },
-    "Quarzsand": {
-        "inputs": {},
-        "outputs": 1,
-        "duration": 3,
-        "building": "Bergbau-Laser"
-    },
-    "Kristallbrocken": {
-        "inputs": {},
-        "outputs": 1,
-        "duration": 1,
-        "building": "Bergbau-Laser"
-    },
-    "Metallerz": {
-        "inputs": {},
-        "outputs": 1,
-        "duration": 1,
-        "building": "Bergbau-Laser"
-    }
-}
+def load_recipes():
+    with open("recipes.json", "r") as f:
+        return json.load(f)
 
+recipes = load_recipes()
 
 def calculate_requirements(product, rate_per_minute, recipes, config):
     requirements = {}
