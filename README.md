@@ -12,6 +12,7 @@ Ein **Produktionsketten-Rechner** für das Spiel "Desynced". Derzeit als **Konso
 
 * **Berechnet rekursiv und detailliert** die benötigten **Ressourcen und Gebäude** für jede Produktionskette, um ein gewünschtes Endprodukt mit einer bestimmten Rate herzustellen.
 * Zeigt eine **detaillierte Aufschlüsselung** der einzelnen Produktionsschritte und der dafür notwendigen Gebäude.
+* Berücksichtigt nun auch den ges. **Effizienz-Bonus** den der Spieler maximal aufbringen kann
 
 ---
 
