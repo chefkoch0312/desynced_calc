@@ -1,4 +1,22 @@
 {
+  "Rahmen mit geringer Dichte": {
+    "inputs": { "Aluminiumblech": 3, "Aluminiumstab": 3 },
+    "outputs": 1,
+    "duration": 40,
+    "building": "Hybride Menschliche Fabrik"
+  },
+  "Aluminiumstab": {
+    "inputs": { "Metallerz": 1, "Lateriterz": 3 },
+    "outputs": 1,
+    "duration": 24,
+    "building": "Raffinerie"
+  },
+  "Aluminiumblech": {
+    "inputs": { "Aluminiumstab": 1, "Quarzsand": 1 },
+    "outputs": 1,
+    "duration": 40,
+    "building": "Raffinerie"
+  },
   "Optisches Kabel": {
     "inputs": { "Raffinierter Kristall": 2, "Kabel": 2 },
     "outputs": 1,
@@ -70,6 +88,12 @@
     "outputs": 1,
     "duration": 12,
     "building": "Raffinerie"
+  },
+  "Lateriterz": {
+    "inputs": {},
+    "outputs": 1,
+    "duration": 6,
+    "building": "Laserextraktor"
   },
   "Quarzsand": {
     "inputs": {},
